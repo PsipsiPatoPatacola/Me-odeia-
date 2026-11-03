@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uma pergunta ❤️</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #e9d5ff;
+  color: #4b246e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background 0.5s, color 0.5s;
+}
+
+.container {
+  width: 90%;
+  max-width: 450px;
+  padding: 35px 25px;
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  border-radius: 25px;
+  box-shadow: 0 10px 35px #00000022;
+  transition: background 0.5s;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+p {
+  line-height: 1.5;
+}
+
+button {
+  border: none;
+  border-radius: 15px;
+  padding: 16px 25px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#sim {
+  background: #22c55e;
+  color: white;
+  margin: 10px;
+}
+
+#nao {
+  background: #ef4444;
+  color: white;
+  margin: 10px;
+  transition: left 0.15s, top 0.15s;
+}
+
+#resultado {
+  display: none;
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 20px;
+  animation: aparecer 0.5s ease;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="container">
+
+  <h1>Você me odeia? ❤️</h1>
+
+  <p>Responda com sinceridade...</p>
+
+  <div>
+    <button id="sim" onclick="responderSim()">Sim</button>
+    <button id="nao">Não</button>
+  </div>
+
+  <div id="resultado">
+    <h2>Resposta confirmada! 💚</h2>
+    <p>Você confirmou que me odeia! 😂</p>
+  </div>
+
+</div>
+
+<script>
+const botaoNao = document.getElementById("nao");
+const container = document.getElementById("container");
+
+let tentativas = 0;
+
+function responderSim() {
+  document.getElementById("resultado").style.display = "block";
+
+  document.getElementById("sim").style.display = "none";
+  botaoNao.style.display = "none";
+}
+
+function fugir() {
+  tentativas++;
+
+  const largura = window.innerWidth;
+  const altura = window.innerHeight;
+
+  const larguraBotao = botaoNao.offsetWidth;
+  const alturaBotao = botaoNao.offsetHeight;
+
+  const margem = 10;
+
+  const x = margem + Math.random() *
+    (largura - larguraBotao - margem * 2);
+
+  const y = margem + Math.random() *
+    (altura - alturaBotao - margem * 2);
+
+  botaoNao.style.position = "fixed";
+  botaoNao.style.left = x + "px";
+  botaoNao.style.top = y + "px";
+  botaoNao.style.margin = "0";
+
+  // A cada tentativa, o fundo fica mais escuro.
+  const escurecimento = Math.min(tentativas * 12, 220);
+
+  document.body.style.background =
+    `rgb(${233 - escurecimento}, ${213 - escurecimento}, ${255 - escurecimento})`;
+
+  document.body.style.color = "white";
+
+  container.style.background =
+    `rgb(${255 - escurecimento}, ${255 - escurecimento}, ${255 - escurecimento})`;
+
+  if (tentativas >= 10) {
+    document.body.style.background = "#050505";
+    container.style.background = "#111111";
+  }
+}
+
+botaoNao.addEventListener("pointerdown", function(event) {
+  event.preventDefault();
+  fugir();
+});
+
+botaoNao.addEventListener("mouseenter", fugir);
+
+botaoNao.addEventListener("click", function(event) {
+  event.preventDefault();
+  fugir();
+});
+
+window.addEventListener("resize", fugir);
+</script>
+
+</body>
+</html>
